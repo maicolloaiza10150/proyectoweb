@@ -5,6 +5,10 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Status;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Carbon\Carbon;
+
 
 class StatusSeeder extends Seeder
 {
@@ -13,10 +17,16 @@ class StatusSeeder extends Seeder
      */
     public function run(): void
     {
-        $estados = ['Activo', 'Inactivo', 'Aprobado', 'Pagado', 'Rechazado', 'Sin stock'];
+        $json = File::get(database_path('data/statuses.json'));
+        $statuses = json_decode($json, true);
 
-        foreach ($estados as $estado) {
-            Status::create(['descripcion' => $estado]);
+        foreach ($statuses as $status) {
+            DB::table('statuses')->insert([
+                'descripcion' => $status['descripcion'],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+
     }
     }
 }
