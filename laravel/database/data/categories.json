@@ -1,0 +1,31 @@
+[
+    {
+      "name": "Acción",
+      "status_id": 1
+    },
+    {
+      "name": "Aventura",
+      "status_id": 2
+    },
+    {
+      "name": "Estrategia",
+      "status_id": 3
+    },
+    {
+      "name": "RPG",
+      "status_id": 1
+    },
+    {
+      "name": "Deportes",
+      "status_id": 2
+    },
+    {
+      "name": "Simulación",
+      "status_id": 3
+    },
+    {
+      "name": "Terror",
+      "status_id": 4
+    }
+  ]
+  
