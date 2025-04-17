@@ -1,0 +1,20 @@
+[
+    {
+      "descripcion": "Activo"
+    },
+    {
+      "descripcion": "Inactivo"
+    },
+    {
+      "descripcion": "Aprobado"
+    },
+    {
+      "descripcion": "Pagado"
+    },
+    {
+      "descripcion": "Rechazado"
+    },
+    {
+      "descripcion": "Sin Stock"
+    }
+  ]
