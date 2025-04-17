@@ -17,14 +17,18 @@ class StatusSeeder extends Seeder
      */
     public function run(): void
     {
+     
         $json = File::get(database_path('data/statuses.json'));
+        
+       
         $statuses = json_decode($json, true);
-
+        
+    
         foreach ($statuses as $status) {
             DB::table('statuses')->insert([
                 'descripcion' => $status['descripcion'],
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
     }
