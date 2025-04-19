@@ -3,8 +3,9 @@
 @section('content')
     <h2>Edit Product</h2>
 
-    <form method="POST" action="{{ route('products.update', $product) }}">
-        @csrf @method('PUT')
+    <form method="POST" action="{{ route('products.update', $product) }}" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
 
         <div class="mb-3">
             <label>Name</label>
@@ -41,6 +42,20 @@
                     </option>
                 @endforeach
             </select>
+        </div>
+
+        <div class="mb-3">
+            <label>Current Image</label><br>
+            @if ($product->image)
+                <img src="data:image/jpeg;base64,{{ $product->image }}" alt="Current Image" style="max-width: 300px; height: auto;" class="mb-2">
+            @else
+                <p>No image available.</p>
+            @endif
+        </div>
+
+        <div class="mb-3">
+            <label>Upload New Image</label>
+            <input type="file" name="image" class="form-control" accept="image/*">
         </div>
 
         <button class="btn btn-primary">Update</button>
