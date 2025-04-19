@@ -9,20 +9,16 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::create('carts', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('product_id')->constrained('products');
-            $table->integer('cantidad');
-            $table->foreignId('card_id')->nullable()->constrained('cards')->nullOnDelete();
-            $table->foreignId('payment_method_id')->nullable()->constrained('payment_method')->nullOnDelete();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('status_id')->constrained('statuses');
-            $table->decimal('total', 10, 2);
-            $table->timestamps();
-        });
-    }
+    public function up()
+{
+    Schema::create('carts', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('product_id')->constrained()->onDelete('cascade');
+        $table->integer('quantity')->default(1);
+        $table->timestamps();
+    });
+}
+
 
     /**
      * Reverse the migrations.

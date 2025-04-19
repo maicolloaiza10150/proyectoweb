@@ -26,6 +26,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
+            'descripcion' => 'nullable|string',
             'stock' => 'required|integer',
             'price' => 'required|numeric',
             'category_id' => 'required|exists:categories,id',
@@ -42,6 +43,7 @@ class ProductController extends Controller
 
         $product = Product::create([
             'name' => $request->name,
+            'descripcion' => $request->descripcion,
             'stock' => $request->stock,
             'price' => $request->price,
             'category_id' => $request->category_id,
@@ -56,6 +58,7 @@ class ProductController extends Controller
         $jsonData[] = [
             'id' => $product->id,
             'name' => $product->name,
+            'descripcion' => $product->descripcion,
             'stock' => $product->stock,
             'price' => $product->price,
             'category_id' => $product->category_id,
@@ -76,16 +79,18 @@ class ProductController extends Controller
     }
 
     public function edit(Product $product)
-    {
-        $categories = Category::all();
-        $statuses = Status::all();
-        return view('products.edit', compact('product', 'categories', 'statuses'));
-    }
+{
+    $categories = Category::all();
+    $statuses = Status::all(); // <--- Este debe existir
+
+    return view('products.edit', compact('product', 'categories', 'statuses'));
+}
 
     public function update(Request $request, Product $product)
     {
         $request->validate([
             'name' => 'required|string',
+            'descripcion' => 'nullable|string',
             'stock' => 'required|integer',
             'price' => 'required|numeric',
             'category_id' => 'required|exists:categories,id',
@@ -102,6 +107,7 @@ class ProductController extends Controller
 
         $product->update([
             'name' => $request->name,
+            'descripcion' => $request->descripcion,
             'stock' => $request->stock,
             'price' => $request->price,
             'category_id' => $request->category_id,
@@ -115,6 +121,7 @@ class ProductController extends Controller
 
         foreach ($jsonData as &$item) {
             if ($item['id'] == $product->id) {
+                $item['descripcion'] = $product->descripcion;
                 $item['name'] = $product->name;
                 $item['stock'] = $product->stock;
                 $item['price'] = $product->price;

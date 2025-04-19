@@ -16,8 +16,7 @@ return new class extends Migration
             $table->string('name', 255);
             $table->foreignId('status_id')->constrained('statuses');
             $table->foreignId('category_id')->constrained('categories');
-            $table->text('description')->nullable();
-            $table->decimal('price', 10, 2);
+            $table->text('descripcion')->nullable();            $table->decimal('price', 10, 2);
             $table->integer('stock');
             $table->longText('image')->nullable();
             $table->timestamps();
