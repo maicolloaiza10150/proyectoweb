@@ -1,38 +1,36 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<head>
-    <meta charset="UTF-8">
-    <title>@yield('title', 'Mi Tienda Laravel')</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
+        <title>{{ config('app.name', 'Laravel') }}</title>
 
-<body class="bg-gray-100 font-sans leading-normal tracking-wide">
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- Barra de Navegación -->
-    <nav class="bg-blue-600 shadow-md px-6 py-4 mb-6 flex justify-between items-center">
-        <div>
-            <a href="{{ url('/') }}" class="text-2xl font-bold text-white hover:text-gray-200">
-                Tienda Laravel
-            </a>
+        <!-- Scripts -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    </head>
+    <body class="font-sans antialiased bg-white">
+        <div class="min-h-screen">
+            @include('layouts.navigation')
+
+            <!-- Page Heading -->
+            @isset($header)
+                <header class="bg-white shadow">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        {{ $header }}
+                    </div>
+                </header>
+            @endisset
+
+            <!-- Page Content -->
+            <main>
+                @yield('content')
+            </main>
         </div>
-        <div class="space-x-4">
-            <a href="{{ route('products.index') }}" class="text-white hover:text-gray-200">Productos</a>
-            <a href="{{ route('cart.index') }}" class="text-white hover:text-gray-200">Carrito</a>
-            <a href="{{ route('cart.checkout') }}" class="text-white hover:text-gray-200">Checkout</a>
-        </div>
-    </nav>
-
-    <!-- Contenido Principal -->
-    <main class="max-w-7xl mx-auto px-4 py-6 bg-white rounded-lg shadow-md">
-        @yield('content')
-    </main>
-
-    <!-- Pie de página (opcional) -->
-    <footer class="bg-gray-800 text-white text-center py-4 mt-8">
-        <p>&copy; 2025 Tienda Laravel. Todos los derechos reservados.</p>
-    </footer>
-
-</body>
-
+    </body>
 </html>

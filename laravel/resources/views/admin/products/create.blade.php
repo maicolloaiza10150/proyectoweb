@@ -5,7 +5,7 @@
         <div class="card p-4 shadow-sm" style="max-width: 600px; width: 100%; background-color: #f8f9fa; border-radius: 8px;">
             <h2 class="text-center mb-4">Crear Producto</h2>
 
-            <form method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <!-- Nombre -->
