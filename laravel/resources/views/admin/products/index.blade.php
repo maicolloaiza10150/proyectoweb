@@ -3,11 +3,15 @@
 @section('title', 'Lista de Productos')
 
 @section('content')
-    <h1 class="text-2xl font-bold mb-6">Productos Disponibles</h1>
+<div class="px-4 sm:px-6 lg:px-8">
+    
+    <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold mb-4">Productos Disponibles</h1>
 
-    <a href="{{ route('admin.products.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-4 inline-block">
-        Agregar Producto
-    </a>
+        <a href="{{ route('admin.products.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 inline-block">
+            Agregar Producto
+        </a>
+    </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @foreach ($products as $product)
@@ -15,27 +19,23 @@
                 
                 <!-- Mostrar la imagen del producto -->
                 <div class="mb-3">
-
-            @if ($product->image)
-            <img src="data:image/jpeg;base64,{{ $product->image }}" alt="Current Image" class="mb-2 max-w-[300px] h-auto mx-auto">
-            @else
-                <p>No image available.</p>
-            @endif
-        </div>
+                    @if ($product->image)
+                        <img src="data:image/jpeg;base64,{{ $product->image }}" alt="Current Image" class="mb-2 max-w-[300px] h-auto mx-auto">
+                    @else
+                        <p>No image available.</p>
+                    @endif
+                </div>
                 
                 <h2 class="text-xl font-semibold text-gray-800">{{ $product->name }}</h2>
                 <p class="text-gray-600 text-sm mb-2">{{ $product->descripcion }}</p>
                 <p class="text-green-600 font-bold mb-2">${{ number_format($product->price, 2) }}</p>
                 <p class="text-sm text-gray-500 mb-3">Stock: {{ $product->stock }}</p>
-   
 
-                    @if ($product->stock > 0)
-  
-@else
-    <span class="text-sm text-red-500 font-semibold">Sin stock</span>
-@endif
-
-                </form>
+                @if ($product->stock > 0)
+                    <!-- Hay stock -->
+                @else
+                    <span class="text-sm text-red-500 font-semibold">Sin stock</span>
+                @endif
 
                 <!-- Botones de editar/eliminar -->
                 <div class="space-x-2 mt-3">
@@ -49,4 +49,5 @@
             </div>
         @endforeach
     </div>
+</div>
 @endsection
