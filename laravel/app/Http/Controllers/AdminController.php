@@ -2,16 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function index()
+    public function dashboard()
     {
-        if (Auth::user()->role !== 'admin') {
-            abort(403, 'No tienes permisos para acceder a esta sección.');
+        // Verificar si el usuario está autenticado
+        if (!auth()->check()) {
+            return redirect()->route('login');  // Redirige si no está autenticado
         }
-
+    
+        // Verificar si el usuario es un administrador
+        if (auth()->user()->role !== 'admin') {
+            return redirect('/shop');  // Redirige si no es admin
+        }
+    
+        // Si pasa las verificaciones, se muestra el dashboard
         return view('admin.dashboard');
     }
+
+    
 }

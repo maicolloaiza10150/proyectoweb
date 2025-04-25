@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 
 class ProductAdminController extends Controller
 {
+    
+
 
 
 public function show(Product $product)
@@ -139,6 +141,11 @@ public function show(Product $product)
 
         return redirect()->route('admin.products.index')->with('success', 'Producto actualizado correctamente.');
     }
+    public function shop()
+{
+    $products = Product::all();
+    return view('shop.index', compact('products'));
+}
 
     public function destroy(Product $product)
     {

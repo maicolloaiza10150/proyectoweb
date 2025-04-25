@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
-            $table->string('descripcion');
-            $table->decimal('saldo', 10, 2);
+            $table->string('descripcion');  // Descripción de la tarjeta (ej. 'Visa', 'MasterCard')
+            $table->decimal('saldo', 10, 2);  // Saldo disponible en la tarjeta
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');  // Relación con el usuario
             $table->timestamps();
         });
     }

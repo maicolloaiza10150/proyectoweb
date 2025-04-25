@@ -3,17 +3,28 @@
         <div class="flex justify-between h-16 items-center">
             <!-- Logo y Título -->
             <div class="flex items-center space-x-8">
-                <a href="{{ route('dashboard') }}" class="flex items-center space-x-2">
+                <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-2">
                     <x-application-logo class="block h-9 w-auto fill-current text-indigo-600" />
                     <span class="font-bold text-xl text-gray-800">Mi Tienda</span>
                 </a>
 
                 <!-- Navegación -->
                 <div class="hidden sm:flex space-x-6">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-gray-800 hover:text-gray-900">
-                        {{ __('Dashboard') }}
+              
+
+                    <x-nav-link :href="route('shop.index')" :active="request()->routeIs('shop.*')" class="text-gray-800 hover:text-gray-900">
+                        {{ __('Tienda') }}
                     </x-nav-link>
-                    <!-- Agrega más enlaces si quieres -->
+
+                    <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')" class="text-gray-800 hover:text-gray-900">
+                        {{ __('Carrito') }}
+                    </x-nav-link>
+
+                    @can('admin')
+                        <x-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')" class="text-gray-800 hover:text-gray-900">
+                            {{ __('Administrar Productos') }}
+                        </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -66,9 +77,21 @@
     <!-- Navegación móvil -->
     <div :class="{ 'block': open, 'hidden': ! open }" class="sm:hidden hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-gray-800 hover:text-gray-900">
-                {{ __('Dashboard') }}
+    
+
+            <x-responsive-nav-link :href="route('shop.index')" :active="request()->routeIs('shop.*')">
+                {{ __('Tienda') }}
             </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
+                {{ __('Carrito') }}
+            </x-responsive-nav-link>
+
+            @can('admin')
+                <x-responsive-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
+                    {{ __('Administrar Productos') }}
+                </x-responsive-nav-link>
+            @endcan
         </div>
 
         <div class="pt-4 pb-1 border-t border-gray-200">
