@@ -5,12 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
-
-
- 
     /**
      * Display a listing of the resource.
      */
@@ -49,8 +47,7 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        // Buscar el usuario por ID
-        $user = User::findOrFail($id); 
+        $user = User::findOrFail($id);
         return view('admin.users.edit', compact('user'));
     }
 
@@ -59,32 +56,30 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $user = User::findOrFail($id);  // Buscar el usuario por ID
+        $user = User::findOrFail($id);
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,  // Excluir el email actual
-            'password' => 'nullable|string|min:8|confirmed',  // Contraseña opcional
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:8|confirmed',
         ]);
-    
-        // Si se proporciona una nueva contraseña, la actualizamos
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+
         if ($request->filled('password')) {
-            $user->password = bcrypt($request->password);  // Encriptar la nueva contraseña
+            $user->password = bcrypt($request->password);
         }
-    
-        // Actualizamos el usuario con los nuevos datos
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-        ]);
-    
-        // Si el usuario autenticado es el mismo que el que se acaba de actualizar
+
+        $user->save();
+
+        $this->syncUsersToJson();
+
         if (Auth::id() == $user->id) {
-            // Cerrar la sesión del usuario para que inicie sesión nuevamente con la nueva contraseña
             Auth::logout();
             return redirect()->route('login')->with('success', 'Usuario actualizado correctamente. Por favor, inicia sesión con la nueva contraseña.');
         }
-    
+
         return redirect()->route('admin.users.index')->with('success', 'Usuario actualizado correctamente.');
     }
 
@@ -93,12 +88,28 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
+        $user = User::findOrFail($id);
+        $user->delete();
 
-    $user = User::findOrFail($id);
+        $this->syncUsersToJson();
 
-    $user->delete();
+        return redirect()->route('admin.users.index')->with('success', 'Usuario eliminado correctamente.');
+    }
 
+    /**
+     * Sincroniza los usuarios con el archivo JSON.
+     */
+    private function syncUsersToJson()
+    {
+        $users = User::all()->map(function ($user) {
+            return [
+                'name' => $user->name,
+                'email' => $user->email,
+                'password' => $user->password, // ya encriptada
+            ];
+        })->toArray();
 
-    return redirect()->route('admin.users.index')->with('success', 'Usuario eliminado correctamente.');
+        $filePath = database_path('data/users.json');
+        File::put($filePath, json_encode($users, JSON_PRETTY_PRINT));
     }
 }

@@ -1,0 +1,22 @@
+[
+    {
+        "descripcion": "Tarjeta de Juan P\u00e9rez",
+        "saldo": 405,
+        "user_id": 1
+    },
+    {
+        "descripcion": "Tarjeta de ncot23",
+        "saldo": 869,
+        "user_id": 2
+    },
+    {
+        "descripcion": "Tarjeta de ncot2",
+        "saldo": 132,
+        "user_id": 3
+    },
+    {
+        "descripcion": "Tarjeta de MAICOL LOAIZA RODRIGUEZ",
+        "saldo": 832,
+        "user_id": 4
+    }
+]

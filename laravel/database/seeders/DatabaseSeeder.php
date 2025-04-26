@@ -20,6 +20,10 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             ProductSeeder::class,
             PaymentMethodSeederClass::class,
+            UserSeeder::class,
+            CardSeeder::class,
+            CartSeeder::class,
+            
         ]);
     }
 }

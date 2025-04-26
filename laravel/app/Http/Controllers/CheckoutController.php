@@ -5,30 +5,30 @@ namespace App\Http\Controllers;
 use App\Models\Card;
 use App\Models\PaymentMethod;
 use App\Models\Product;
-use App\Models\Cart;  // Asegúrate de importar el modelo Cart
+use App\Models\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class CheckoutController extends Controller
 {
-    // Mostrar la vista de checkout con las tarjetas y métodos de pago disponibles
+    // Mostrar los productos del carrito
     public function index()
     {
-        // Obtener todos los productos del carrito para el usuario autenticado
         $cartItems = Cart::with('product')
                          ->where('user_id', Auth::id())
                          ->get();
 
-        // Pasar los cartItems a la vista
         return view('checkout.index', compact('cartItems'));
     }
+
+    // Mostrar la vista de pago
     public function create()
     {
         $cards = Card::where('user_id', auth()->id())->get(); 
         $paymentMethods = PaymentMethod::all();
         $cartItems = Cart::with('product')->where('user_id', auth()->id())->get();
         
-        // Calcular el total
         $totalAmount = 0;
         foreach ($cartItems as $cartItem) {
             $totalAmount += $cartItem->product->price * $cartItem->quantity;
@@ -36,54 +36,63 @@ class CheckoutController extends Controller
     
         return view('checkout.create', compact('cards', 'paymentMethods', 'totalAmount'));
     }
+
     // Procesar el pago
     public function store(Request $request)
-{
-    // Validar los datos recibidos
-    $request->validate([
-        'card_id' => 'required|exists:cards,id',
-        'payment_method_id' => 'required|exists:payment_methods,id',
-        'amount' => 'required|numeric|min:1',
-    ]);
+    {
+        $request->validate([
+            'card_id' => 'required|exists:cards,id',
+            'payment_method_id' => 'required|exists:payment_methods,id',
+            'amount' => 'required|numeric|min:1',
+        ]);
 
-    // Obtener la tarjeta seleccionada
-    $card = Card::find($request->card_id);
+        $card = Card::find($request->card_id);
 
-    // Obtener los productos del carrito con la relación cargada
-    $cartItems = Cart::with('product')
-                     ->where('user_id', Auth::id())
-                     ->get();
+        $cartItems = Cart::with('product')
+                         ->where('user_id', Auth::id())
+                         ->get();
 
-    // Calcular el total de la compra
-    $totalAmount = 0;
-    foreach ($cartItems as $cartItem) {
-        if ($cartItem->product) {
-            $totalAmount += $cartItem->product->price * $cartItem->quantity;
-        }
-    }
-
-    // Verificar si el saldo de la tarjeta es suficiente
-    if ($card->saldo >= $totalAmount) {
-        // Descontar el saldo de la tarjeta
-        $card->saldo -= $totalAmount;
-        $card->save();
-
-        // Procesar cada producto en el carrito
+        $totalAmount = 0;
         foreach ($cartItems as $cartItem) {
             if ($cartItem->product) {
-                // Reducir el stock
-                $product = $cartItem->product;
-                $product->stock -= $cartItem->quantity;
-                $product->save();
+                $totalAmount += $cartItem->product->price * $cartItem->quantity;
             }
-
-            // Eliminar del carrito
-            $cartItem->delete();
         }
 
-        return redirect()->route('checkout.index')->with('success', 'Pago realizado correctamente');
-    } else {
-        return redirect()->route('checkout.index')->with('error', 'Saldo insuficiente en la tarjeta');
+        if ($card->saldo >= $totalAmount) {
+            // Descontar el saldo de la tarjeta
+            $card->saldo -= $totalAmount;
+            $card->save();
+
+            // Procesar cada ítem del carrito
+            foreach ($cartItems as $cartItem) {
+                if ($cartItem->product) {
+                    $product = $cartItem->product;
+                    $product->stock -= $cartItem->quantity;
+                    $product->save();
+                }
+
+                // Eliminar del carrito en la base de datos
+                $cartItem->delete();
+            }
+
+            // 🔁 También eliminar del JSON
+            $jsonPath = database_path('data/carts.json');
+            if (File::exists($jsonPath)) {
+                $cartData = json_decode(File::get($jsonPath), true);
+
+                // Eliminar todos los productos del usuario autenticado
+                $cartData = array_filter($cartData, function ($item) {
+                    return $item['user_id'] != Auth::id();
+                });
+
+                $cartData = array_values($cartData); // Reindexar
+                File::put($jsonPath, json_encode($cartData, JSON_PRETTY_PRINT));
+            }
+
+            return redirect()->route('checkout.index')->with('success', 'Pago realizado correctamente');
+        } else {
+            return redirect()->route('checkout.index')->with('error', 'Saldo insuficiente en la tarjeta');
+        }
     }
-}
 }

@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Juan P\u00e9rez",
+        "email": "juan@example.com",
+        "password": "$2y$12$B0YYzUw7R5\/m0dn5QaD5YeGtG1wAhhjxV5mGGYwcWTZfmf86vUjRm"
+    },
+    {
+        "name": "ncot23",
+        "email": "nicolmaicol10@gmail.com",
+        "password": "$2y$12$3aNBjLkQTuCCJCzeIGgPEOXPRZY5NNdHQjvqPhnLvKiwZbqSviRX2"
+    },
+    {
+        "name": "ncot2",
+        "email": "nicolmaicol11@gmail.com",
+        "password": "$2y$12$1d3dYU5.Kg2q0\/1Y6HjmEejjq\/h8ql2RdWGcEiLu45Bhxkh8V94Wy"
+    },
+    {
+        "name": "MAICOL LOAIZA RODRIGUEZ",
+        "email": "nicolmaicol9@gmail.com",
+        "password": "$2y$12$BG7q6dyftAzVfqACrXH2VuW9JS5SoqCzHPiHMdrQjmilUSeDRDeF."
+    }
+]
