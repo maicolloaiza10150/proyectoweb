@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\File;
+use App\Models\Card;
 
 class RegisteredUserController extends Controller
 {
@@ -29,52 +30,69 @@ class RegisteredUserController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+{
+    $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+        'password' => ['required', 'confirmed', Rules\Password::defaults()],
+    ]);
 
-        // Crear el usuario en la base de datos
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    // Crear el usuario
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+    ]);
 
-        // Emitir el evento de registrado
-        event(new Registered($user));
+    // Crear una tarjeta para el nuevo usuario
+    $card = Card::create([
+        'descripcion' => 'Tarjeta de ' . $user->name,
+        'saldo' => rand(100, 1000),
+        'user_id' => $user->id,
+    ]);
 
-        // Logear al usuario
-        Auth::login($user);
+    // ✅ Guardar también en cards.json
+    $cardFilePath = database_path('data/cards.json');
 
-        // Obtener el archivo users.json (crear si no existe)
-        $filePath = database_path('data/users.json');
-
-        if (File::exists($filePath)) {
-            // Leer los datos existentes
-            $json = File::get($filePath);
-            $users = json_decode($json, true);
-        } else {
-            // Si el archivo no existe, inicializar un arreglo vacío
-            $users = [];
-        }
-
-        // Encriptar la contraseña antes de guardarla en el JSON
-        $encryptedPassword = Hash::make($request->password);
-
-        // Añadir el nuevo usuario al archivo JSON
-        $users[] = [
-            'name' => $user->name,
-            'email' => $user->email,
-            'password' => $encryptedPassword, // Almacenar la contraseña encriptada
-        ];
-
-        // Guardar los datos nuevamente en el archivo
-        File::put($filePath, json_encode($users, JSON_PRETTY_PRINT));
-
-        // Redirigir al usuario después de la creación
-        return redirect(route('register', absolute: false));
+    if (File::exists($cardFilePath)) {
+        $cards = json_decode(File::get($cardFilePath), true);
+    } else {
+        $cards = [];
     }
+
+    $cards[] = [
+        'descripcion' => $card->descripcion,
+        'saldo' => $card->saldo,
+        'user_id' => $card->user_id,
+    ];
+
+    File::put($cardFilePath, json_encode($cards, JSON_PRETTY_PRINT));
+
+    // Emitir evento de registrado
+    event(new Registered($user));
+
+    // Loguear al usuario
+    Auth::login($user);
+
+    // Guardar usuario en users.json
+    $userFilePath = database_path('data/users.json');
+    if (File::exists($userFilePath)) {
+        $users = json_decode(File::get($userFilePath), true);
+    } else {
+        $users = [];
+    }
+
+    $encryptedPassword = Hash::make($request->password);
+
+    $users[] = [
+        'name' => $user->name,
+        'email' => $user->email,
+        'password' => $encryptedPassword,
+    ];
+
+    File::put($userFilePath, json_encode($users, JSON_PRETTY_PRINT));
+
+    return redirect(route('register', absolute: false));
+}
+    
 }
