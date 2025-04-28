@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\File;
 
 class CartController extends Controller
 {
-    // Mostrar el carrito
     public function index()
     {
         $cartItems = Cart::with('product')
@@ -20,7 +19,6 @@ class CartController extends Controller
         return view('cart.index', compact('cartItems'));
     }
 
-    // Agregar o actualizar producto en el carrito
     public function addToCart(Request $request, $productId)
     {
         $request->validate([
@@ -49,7 +47,6 @@ class CartController extends Controller
         return redirect()->route('cart.index')->with('success', 'Producto agregado al carrito');
     }
 
-    // Eliminar producto del carrito
     public function removeFromCart($productId)
     {
         $cartItem = Cart::where('user_id', Auth::id())
@@ -65,7 +62,6 @@ class CartController extends Controller
         return redirect()->route('cart.index')->with('error', 'Producto no encontrado en el carrito');
     }
 
-    // Exportar el contenido del carrito a JSON
     private function exportToJson()
     {
         $cartItems = Cart::all()->map(function ($item) {

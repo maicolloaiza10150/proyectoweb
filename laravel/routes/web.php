@@ -29,9 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout/create', [CheckoutController::class, 'create'])->name('checkout.create');
 });
 
-// Rutas del panel de administración
+
 Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard'); // Cambiado para llamar al controlador AdminController
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard'); 
 
     Route::resource('/products', ProductAdminController::class);
     Route::resource('/users', UserController::class);

@@ -61,7 +61,6 @@ public function show(Product $product)
             'image' => $imageData,
         ]);
 
-        // Guardar en JSON
         $jsonPath = base_path('database/data/products.json');
         $jsonData = file_exists($jsonPath) ? json_decode(file_get_contents($jsonPath), true) : [];
 
@@ -119,7 +118,6 @@ public function show(Product $product)
             'image' => $imageData,
         ]);
 
-        // Actualizar JSON
         $jsonPath = base_path('database/data/products.json');
         $jsonData = file_exists($jsonPath) ? json_decode(file_get_contents($jsonPath), true) : [];
 
@@ -149,7 +147,6 @@ public function show(Product $product)
 
     public function destroy(Product $product)
     {
-        // Eliminar del JSON
         $jsonPath = base_path('database/data/products.json');
         $jsonData = file_exists($jsonPath) ? json_decode(file_get_contents($jsonPath), true) : [];
 
@@ -157,7 +154,6 @@ public function show(Product $product)
 
         file_put_contents($jsonPath, json_encode(array_values($jsonData), JSON_PRETTY_PRINT));
 
-        // Eliminar de la base de datos
         $product->delete();
 
         return redirect()->route('admin.products.index')->with('success', 'Producto eliminado correctamente.');

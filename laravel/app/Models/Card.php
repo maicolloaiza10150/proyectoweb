@@ -9,10 +9,8 @@ class Card extends Model
 {
     use HasFactory;
 
-    // Se definen los campos que se pueden rellenar masivamente
     protected $fillable = ['descripcion', 'saldo', 'user_id'];
 
-    // Relación con el modelo User
     public function user()
     {
         return $this->belongsTo(User::class);

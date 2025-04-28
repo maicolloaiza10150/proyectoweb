@@ -12,7 +12,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach ($cartItems as $cartItem)
                 <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out">
-                    <!-- Imagen del producto -->
+                  
                     <div class="bg-gray-200 rounded-t-lg p-4">
                         @if ($cartItem->product->image)
                             <img src="data:image/jpeg;base64,{{ $cartItem->product->image }}" alt="Product Image" class="mx-auto mb-4 max-w-[250px] h-auto object-cover rounded-md">
@@ -27,7 +27,7 @@
                         <p class="text-lg font-bold text-green-600 mb-3">${{ number_format($cartItem->product->price, 2) }}</p>
                         <p class="text-sm text-gray-500 mb-4">Cantidad: {{ $cartItem->quantity }}</p>
 
-                        <!-- Formulario para eliminar producto del carrito -->
+                       
                         <form action="{{ route('cart.remove', $cartItem->product->id) }}" method="POST">
                             @csrf
                             @method('DELETE')

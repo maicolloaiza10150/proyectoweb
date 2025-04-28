@@ -13,7 +13,6 @@ class CartSeeder extends Seeder
      */
     public function run(): void
     {
-        // Limpiar carrito anterior
         Cart::truncate();
 
         $jsonPath = database_path('data/carts.json');

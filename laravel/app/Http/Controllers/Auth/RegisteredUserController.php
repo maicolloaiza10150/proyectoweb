@@ -37,21 +37,18 @@ class RegisteredUserController extends Controller
         'password' => ['required', 'confirmed', Rules\Password::defaults()],
     ]);
 
-    // Crear el usuario
     $user = User::create([
         'name' => $request->name,
         'email' => $request->email,
         'password' => Hash::make($request->password),
     ]);
 
-    // Crear una tarjeta para el nuevo usuario
     $card = Card::create([
         'descripcion' => 'Tarjeta de ' . $user->name,
         'saldo' => rand(100, 1000),
         'user_id' => $user->id,
     ]);
 
-    // ✅ Guardar también en cards.json
     $cardFilePath = database_path('data/cards.json');
 
     if (File::exists($cardFilePath)) {
@@ -68,13 +65,10 @@ class RegisteredUserController extends Controller
 
     File::put($cardFilePath, json_encode($cards, JSON_PRETTY_PRINT));
 
-    // Emitir evento de registrado
     event(new Registered($user));
 
-    // Loguear al usuario
     Auth::login($user);
 
-    // Guardar usuario en users.json
     $userFilePath = database_path('data/users.json');
     if (File::exists($userFilePath)) {
         $users = json_decode(File::get($userFilePath), true);

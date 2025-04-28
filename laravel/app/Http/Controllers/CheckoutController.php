@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\File;
 
 class CheckoutController extends Controller
 {
-    // Mostrar los productos del carrito
     public function index()
     {
         $cartItems = Cart::with('product')
@@ -22,7 +21,6 @@ class CheckoutController extends Controller
         return view('checkout.index', compact('cartItems'));
     }
 
-    // Mostrar la vista de pago
     public function create()
     {
         $cards = Card::where('user_id', auth()->id())->get(); 
@@ -37,7 +35,6 @@ class CheckoutController extends Controller
         return view('checkout.create', compact('cards', 'paymentMethods', 'totalAmount'));
     }
 
-    // Procesar el pago
     public function store(Request $request)
     {
         $request->validate([
@@ -60,11 +57,9 @@ class CheckoutController extends Controller
         }
 
         if ($card->saldo >= $totalAmount) {
-            // Descontar el saldo de la tarjeta
             $card->saldo -= $totalAmount;
             $card->save();
 
-            // Procesar cada ítem del carrito
             foreach ($cartItems as $cartItem) {
                 if ($cartItem->product) {
                     $product = $cartItem->product;
@@ -72,21 +67,18 @@ class CheckoutController extends Controller
                     $product->save();
                 }
 
-                // Eliminar del carrito en la base de datos
                 $cartItem->delete();
             }
 
-            // 🔁 También eliminar del JSON
             $jsonPath = database_path('data/carts.json');
             if (File::exists($jsonPath)) {
                 $cartData = json_decode(File::get($jsonPath), true);
 
-                // Eliminar todos los productos del usuario autenticado
                 $cartData = array_filter($cartData, function ($item) {
                     return $item['user_id'] != Auth::id();
                 });
 
-                $cartData = array_values($cartData); // Reindexar
+                $cartData = array_values($cartData); 
                 File::put($jsonPath, json_encode($cartData, JSON_PRETTY_PRINT));
             }
 

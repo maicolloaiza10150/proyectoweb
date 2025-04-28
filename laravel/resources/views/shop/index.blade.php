@@ -13,7 +13,7 @@
         @foreach ($products as $product)
             <div class="bg-gray-100 rounded-lg p-4 shadow hover:shadow-md transition">
                 
-                <!-- Mostrar la imagen del producto -->
+               
                 <div class="mb-3">
                     @if ($product->image)
                         <img src="data:image/jpeg;base64,{{ $product->image }}" alt="Current Image" class="mb-2 max-w-[300px] h-auto mx-auto">
@@ -30,7 +30,7 @@
                 @if ($product->stock > 0)
 <form action="{{ route('cart.add', $product->id) }}" method="POST">
     @csrf
-    <input type="hidden" name="quantity" value="1"> <!-- Cantidad por defecto -->
+    <input type="hidden" name="quantity" value="1"> 
     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-3 w-full">
         Agregar al carrito
     </button>

@@ -17,7 +17,7 @@
         @foreach ($products as $product)
             <div class="bg-gray-100 rounded-lg p-4 shadow hover:shadow-md transition">
                 
-                <!-- Mostrar la imagen del producto -->
+             
                 <div class="mb-3">
                     @if ($product->image)
                         <img src="data:image/jpeg;base64,{{ $product->image }}" alt="Current Image" class="mb-2 max-w-[300px] h-auto mx-auto">
@@ -32,12 +32,12 @@
                 <p class="text-sm text-gray-500 mb-3">Stock: {{ $product->stock }}</p>
 
                 @if ($product->stock > 0)
-                    <!-- Hay stock -->
+                   
                 @else
                     <span class="text-sm text-red-500 font-semibold">Sin stock</span>
                 @endif
 
-                <!-- Botones de editar/eliminar -->
+                
                 <div class="space-x-2 mt-3">
                     <a href="{{ route('admin.products.edit', $product->id) }}" class="text-sm bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500">Editar</a>
                     <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="inline-block" onsubmit="return confirm('¿Estás seguro de eliminar este producto?');">

@@ -14,12 +14,10 @@ class CardSeeder extends Seeder
      */
     public function run()
     {
-        // Limpiar tabla antes de insertar (opcional)
         Card::truncate();
 
         $cards = [];
 
-        // Obtener todos los usuarios
         $users = User::all();
 
         if ($users->isNotEmpty()) {
@@ -30,7 +28,6 @@ class CardSeeder extends Seeder
                     'user_id' => $user->id,
                 ]);
 
-                // Guardar para exportarlo al JSON
                 $cards[] = [
                     'descripcion' => $card->descripcion,
                     'saldo' => $card->saldo,
@@ -39,7 +36,6 @@ class CardSeeder extends Seeder
             }
         }
 
-        // Guardar en cards.json
         $jsonPath = database_path('data/cards.json');
         File::ensureDirectoryExists(dirname($jsonPath));
         File::put($jsonPath, json_encode($cards, JSON_PRETTY_PRINT));

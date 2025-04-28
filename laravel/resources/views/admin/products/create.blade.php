@@ -9,19 +9,19 @@
             @csrf
             <div class="space-y-4">
 
-                <!-- Nombre del Producto -->
+                
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700">Nombre del Producto</label>
                     <input type="text" name="name" class="mt-1 block w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-500" required placeholder="Ingresa el nombre del producto">
                 </div>
 
-                <!-- Descripción -->
+         
                 <div>
                     <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
                     <textarea name="descripcion" class="mt-1 block w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Ingresa una descripción del producto"></textarea>
                 </div>
 
-                <!-- Stock y Precio -->
+              
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label for="stock" class="block text-sm font-medium text-gray-700">Stock</label>
@@ -34,7 +34,6 @@
                     </div>
                 </div>
 
-                <!-- Categoría -->
                 <div>
                     <label for="category_id" class="block text-sm font-medium text-gray-700">Categoría</label>
                     <select name="category_id" class="mt-1 block w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-500" required>
@@ -45,7 +44,7 @@
                     </select>
                 </div>
 
-                <!-- Estado -->
+                
                 <div>
                     <label for="status_id" class="block text-sm font-medium text-gray-700">Estado</label>
                     <select name="status_id" class="mt-1 block w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-500" required>
@@ -56,14 +55,14 @@
                     </select>
                 </div>
 
-                <!-- Imagen -->
+               
                 <div>
                     <label for="image" class="block text-sm font-medium text-gray-700">Imagen del Producto</label>
                     <input type="file" name="image" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" accept="image/*">
                 </div>
             </div>
 
-            <!-- Botón de Guardar -->
+           
             <div class="mt-6 text-center">
                 <button type="submit" class="bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     Guardar Producto

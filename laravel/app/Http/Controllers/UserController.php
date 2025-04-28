@@ -96,16 +96,13 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')->with('success', 'Usuario eliminado correctamente.');
     }
 
-    /**
-     * Sincroniza los usuarios con el archivo JSON.
-     */
     private function syncUsersToJson()
     {
         $users = User::all()->map(function ($user) {
             return [
                 'name' => $user->name,
                 'email' => $user->email,
-                'password' => $user->password, // ya encriptada
+                'password' => $user->password, 
             ];
         })->toArray();
 

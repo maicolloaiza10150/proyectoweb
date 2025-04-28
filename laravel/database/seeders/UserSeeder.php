@@ -18,7 +18,6 @@ class UserSeeder extends Seeder
         foreach ($users as $user) {
             $password = $user['password'];
 
-            // Si la contraseña no está encriptada, la encriptamos
             if (!str_starts_with($password, '$2y$')) {
                 $password = Hash::make($password);
             }

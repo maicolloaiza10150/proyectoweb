@@ -6,15 +6,15 @@
 <div class="min-h-screen bg-white py-12">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
 
-        <!-- Título centrado -->
+       
         <h1 class="text-4xl font-bold text-center text-gray-800 mb-12">
             Panel de Administración
         </h1>
 
-        <!-- Tarjetas -->
+    
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             
-            <!-- Productos -->
+          
             <a href="{{ route('admin.products.index') }}" class="group block p-6 bg-white border border-gray-200 rounded-xl shadow hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                 <div class="flex items-center space-x-4 mb-4">
                     <div class="bg-blue-100 text-blue-600 p-3 rounded-full">
@@ -28,7 +28,7 @@
                 <p class="text-gray-600">Ver, editar y eliminar productos de la tienda.</p>
             </a>
 
-            <!-- Crear Producto -->
+        
             <a href="{{ route('admin.products.create') }}" class="group block p-6 bg-white border border-gray-200 rounded-xl shadow hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                 <div class="flex items-center space-x-4 mb-4">
                     <div class="bg-green-100 text-green-600 p-3 rounded-full">
@@ -42,7 +42,7 @@
                 <p class="text-gray-600">Agregar un nuevo producto a la tienda.</p>
             </a>
 
-            <!-- Usuarios -->
+           
             <a href="{{ route('admin.users.index') }}" class="group block p-6 bg-white border border-gray-200 rounded-xl shadow hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                 <div class="flex items-center space-x-4 mb-4">
                     <div class="bg-purple-100 text-purple-600 p-3 rounded-full">
