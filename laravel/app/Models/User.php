@@ -6,11 +6,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens; // ¡Importante! Añadir este use statement
 
 class User extends Authenticatable
 {
+<<<<<<< Updated upstream
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+=======
+    use HasFactory, Notifiable, HasApiTokens; // ¡Importante! Añadir HasApiTokens aquí
+>>>>>>> Stashed changes
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +26,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+<<<<<<< Updated upstream
+=======
+        'role', // Ya lo tenías, ¡bien!
+>>>>>>> Stashed changes
     ];
 
     /**
@@ -45,4 +54,18 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+<<<<<<< Updated upstream
 }
+=======
+
+    /**
+     * Check if the user has the 'admin' role.
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool // Añadimos el tipo de retorno explícitamente
+    {
+        return $this->role === 'admin';
+    }
+}
+>>>>>>> Stashed changes
