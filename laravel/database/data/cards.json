@@ -1,0 +1,17 @@
+[
+    {
+        "descripcion": "Tarjeta de MAICOL LOAIZA RODRIGUEZ",
+        "saldo": 860,
+        "user_id": 1
+    },
+    {
+        "descripcion": "Tarjeta de VIDAL STEVENS OBANDO GUTIERREZ",
+        "saldo": 988,
+        "user_id": 2
+    },
+    {
+        "descripcion": "Tarjeta de SANTIAGO GIRALDO BERMUDEZ",
+        "saldo": 247,
+        "user_id": 3
+    }
+]

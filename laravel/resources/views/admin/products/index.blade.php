@@ -1,0 +1,53 @@
+@extends('layouts.app')
+
+@section('title', 'Lista de Productos')
+
+@section('content')
+<div class="px-4 sm:px-6 lg:px-8">
+    
+    <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold mb-4">Productos Disponibles</h1>
+
+        <a href="{{ route('admin.products.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 inline-block">
+            Agregar Producto
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach ($products as $product)
+            <div class="bg-gray-100 rounded-lg p-4 shadow hover:shadow-md transition">
+                
+             
+                <div class="mb-3">
+                    @if ($product->image)
+                        <img src="data:image/jpeg;base64,{{ $product->image }}" alt="Current Image" class="mb-2 max-w-[300px] h-auto mx-auto">
+                    @else
+                        <p>No image available.</p>
+                    @endif
+                </div>
+                
+                <h2 class="text-xl font-semibold text-gray-800">{{ $product->name }}</h2>
+                <p class="text-gray-600 text-sm mb-2">{{ $product->descripcion }}</p>
+                <p class="text-green-600 font-bold mb-2">${{ number_format($product->price, 2) }}</p>
+                <p class="text-sm text-gray-500 mb-3">Stock: {{ $product->stock }}</p>
+
+                @if ($product->stock > 0)
+                   
+                @else
+                    <span class="text-sm text-red-500 font-semibold">Sin stock</span>
+                @endif
+
+                
+                <div class="space-x-2 mt-3">
+                    <a href="{{ route('admin.products.edit', $product->id) }}" class="text-sm bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500">Editar</a>
+                    <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="inline-block" onsubmit="return confirm('¿Estás seguro de eliminar este producto?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-sm bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+@endsection
